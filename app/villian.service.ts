@@ -3,7 +3,7 @@ import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Hero } from './hero';
+import { Villian } from './villian';
 
 
 /**
@@ -15,8 +15,8 @@ import { Hero } from './hero';
 // Probably put {}'s inside the () and add settings
 
 @Injectable()
-export class HeroService {  // this = HeroService
-  private heroesUrl = 'app/heroes';  // URL to web api
+export class VillianService {  // this = VillianService
+  private villainsUrl = 'app/villains';  // URL to web api
 
   constructor(private http: Http) { }
 
@@ -27,50 +27,50 @@ export class HeroService {  // this = HeroService
     return Promise.reject(error.message || error);
   }
 
-  getHeroes(): Promise<Hero[]> {
-    return this.http.get(this.heroesUrl)
+  getvillains(): Promise<Villian[]> {
+    return this.http.get(this.villainsUrl)
       .toPromise()
-      .then(response => response.json().data as Hero[])
+      .then(response => response.json().data as Villian[])
       .catch(this.handleError);
   }
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
-  update(hero: Hero): Promise<Hero> {
-    const url = `${this.heroesUrl}/${hero.id}`;
+  update(Villian: Villian): Promise<Villian> {
+    const url = `${this.villainsUrl}/${Villian.id}`;
     return this.http
-      .put(url, JSON.stringify(hero), { headers: this.headers })
+      .put(url, JSON.stringify(Villian), { headers: this.headers })
       .toPromise()
-      .then(() => hero)
+      .then(() => Villian)
       .catch(this.handleError);
   }
 
 
-  create(name: string): Promise<Hero> {
+  create(name: string): Promise<Villian> {
     return this.http
-      .post(this.heroesUrl, JSON.stringify({ name: name }), { headers: this.headers })
+      .post(this.villainsUrl, JSON.stringify({ name: name }), { headers: this.headers })
       .toPromise()
       .then(res => res.json().data)
       .catch(this.handleError);
   }
 
 delete(id: number): Promise<void> {
-  const url = `${this.heroesUrl}/${id}`;
+  const url = `${this.villainsUrl}/${id}`;
   return this.http.delete(url, {headers: this.headers})
     .toPromise()
     .then(() => null)
     .catch(this.handleError);
 }
 
-  getHeroesSlowly(): Promise<Hero[]> {
-    return new Promise<Hero[]>(resolve =>
+  getvillainsSlowly(): Promise<Villian[]> {
+    return new Promise<Villian[]>(resolve =>
       setTimeout(resolve, 2000)) // delay 2 seconds
-      .then(() => this.getHeroes());
+      .then(() => this.getvillains());
   }
 
-  getHero(id: number): Promise<Hero> {
-    return this.getHeroes()
-      .then(heroes => heroes.find(hero => hero.id === id));
+  getVillian(id: number): Promise<Villian> {
+    return this.getvillains()
+      .then(villains => villains.find(Villian => Villian.id === id));
   }
 }
 
